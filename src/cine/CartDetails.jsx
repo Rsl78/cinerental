@@ -3,16 +3,25 @@ import { MovieContext } from "../context";
 import { getImgUrl } from "../utils/cine-utility";
 import Delete from "../assets/delete.svg";
 import Checkout from "../assets/icons/checkout.svg";
+import {toast} from "react-toastify";
 
 const CartDetails = ({ onClose }) => {
-  const { cartData, setCartData } = useContext(MovieContext);
+  // const { cartData, setCartData } = useContext(MovieContext);
+  const { state, dispatch } = useContext(MovieContext);
 
-  console.log(cartData);
+  console.log(state.cartData);
 
-  function handleDeleteCart(event, id) {
+  function handleDeleteCart(event, item) {
     event.stopPropagation();
-    const filteredItem = cartData.filter((item) => item.id !== id);
-    setCartData(filteredItem);
+    // const filteredItem = cartData.filter((item) => item.id !== id);
+    // setCartData(filteredItem);
+    dispatch({
+      type: "REMOVE_FROM_CART",
+      payload:item,
+    });
+    toast.success(`${item.title} is removed from cart successfully`, {
+      position: "bottom-right",
+    });
   }
 
   return (
@@ -23,10 +32,10 @@ const CartDetails = ({ onClose }) => {
             Your Carts
           </h2>
           <div className="space-y-8 lg:space-y-12 max-h-[450px] overflow-auto mb-10 lg:mb-14">
-            {cartData.length === 0 ? (
+            {state.cartData.length === 0 ? (
               <p className="text-3xl text-center">No items in the cart</p>
             ) : (
-              cartData.map((item) => (
+              state.cartData.map((item) => (
                 <div key={item.id} className="grid grid-cols-[1fr_auto] gap-4">
                   <div className="flex items-center gap-4">
                     <img
@@ -49,7 +58,7 @@ const CartDetails = ({ onClose }) => {
                   <div className="flex justify-between gap-4 items-center">
                     <button
                       className="bg-[#D42967] rounded-md p-2 md:px-4 inline-flex items-center space-x-2 text-white"
-                      onClick={() => handleDeleteCart(event, item.id)}
+                      onClick={(event) => handleDeleteCart(event, item)}
                     >
                       <img className="w-5 h-5" src={Delete} alt="Delete" />
                       <span className="max-md:hidden">Remove</span>

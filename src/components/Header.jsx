@@ -9,10 +9,10 @@ import { MovieContext, ThemeContext } from "../context";
 
 const Header = () => {
   const [showCard, setShowCart] = useState(false);
-  const { cartData } = useContext(MovieContext);
+  const { state } = useContext(MovieContext);
   const { darkMode, setDarkMode } = useContext(ThemeContext);
 
-  console.log(cartData);
+  console.log(state.cartData);
 
   function handleCartShow() {
     setShowCart(true);
@@ -39,9 +39,14 @@ const Header = () => {
             <a
               className="bg-primary/20 dark:bg-primary/[7%] rounded-lg backdrop-blur-[2px] p-1 inline-block"
               href="#"
-              onClick={() => setDarkMode(darkMode => !darkMode)}
+              onClick={() => setDarkMode((darkMode) => !darkMode)}
             >
-              <img src={darkMode? Sun: Moon} width="24" height="24" alt="Moon" />
+              <img
+                src={darkMode ? Sun : Moon}
+                width="24"
+                height="24"
+                alt="Moon"
+              />
             </a>
           </li>
           <li>
@@ -56,9 +61,9 @@ const Header = () => {
                 height="24"
                 alt="Shopping Cart"
               />
-              {cartData.length > 0 && (
+              {state.cartData.length > 0 && (
                 <span className="bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs absolute -top-1 -right-1">
-                  {cartData.length}
+                  {state.cartData.length}
                 </span>
               )}
             </a>
